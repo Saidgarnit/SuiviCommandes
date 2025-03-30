@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">suiviCommandes</string>
+    <string name="register_sign_in">Register / Sign In</string>
 </resources>

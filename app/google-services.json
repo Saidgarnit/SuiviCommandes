@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "302866287858",
+    "project_id": "suivicommandes-a7198",
+    "storage_bucket": "suivicommandes-a7198.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302866287858:android:ea9f763bac15aa6bb6d46b",
+        "android_client_info": {
+          "package_name": "com.example.suivicommandes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-BUltgMEmhnUoo6oRkIeexiqWz4DPC2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
