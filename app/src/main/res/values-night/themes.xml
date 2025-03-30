@@ -1,7 +1,15 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SuiviCommandes" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SuiviCommandes" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">#1976D2</item>
+        <item name="colorPrimaryVariant">#0D47A1</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">#009688</item>
+        <item name="colorSecondaryVariant">#4DB6AC</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">#0D47A1</item>
     </style>
 </resources>

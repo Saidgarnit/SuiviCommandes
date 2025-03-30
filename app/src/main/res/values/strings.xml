@@ -1,4 +1,15 @@
 <resources>
-    <string name="app_name">suiviCommandes</string>
-    <string name="register_sign_in">Register / Sign In</string>
+    <string name="app_name">Commande Tracker</string>
+    <string name="app_logo">Commande Tracker Logo</string>
+    <string name="welcome_message">Welcome to Commande Tracker</string>
+    <string name="welcome_subtitle">Track your orders efficiently</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="register">Create an account</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="register_now">Register now</string>
+    <string name="already_account">Already have an account?</string>
+    <string name="sign_in_now">Sign in</string>
 </resources>

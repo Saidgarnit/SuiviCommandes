@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Colors -->
+    <color name="colorPrimary">#3F51B5</color>          <!-- Indigo -->
+    <color name="colorPrimaryDark">#303F9F</color>      <!-- Dark Indigo -->
+    <color name="colorPrimaryLight">#C5CAE9</color>     <!-- Light Indigo -->
+
+    <!-- Accent Colors -->
+    <color name="colorAccent">#FF4081</color>           <!-- Pink -->
+    <color name="colorAccentLight">#FF80AB</color>      <!-- Light Pink -->
+
+    <!-- Button Colors -->
+    <color name="buttonColor">#3F51B5</color>           <!-- Primary -->
+    <color name="buttonColorSecondary">#FF4081</color>  <!-- Accent -->
+    <color name="buttonDisabled">#BDBDBD</color>        <!-- Gray -->
+
+    <!-- Text Colors -->
+    <color name="textColorPrimary">#212121</color>      <!-- Dark Gray -->
+    <color name="textColorSecondary">#757575</color>    <!-- Medium Gray -->
+    <color name="textColorHint">#9E9E9E</color>         <!-- Light Gray -->
+    <color name="textColorWhite">#FFFFFF</color>        <!-- White -->
+
+    <!-- Background Colors -->
+    <color name="backgroundColor">#F5F5F5</color>       <!-- Off-White -->
+    <color name="cardBackground">#FFFFFF</color>        <!-- White -->
+    <color name="dividerColor">#EEEEEE</color>          <!-- Light Gray -->
+
+    <!-- Gradient Colors -->
+    <color name="gradientStart">#304FFE</color>         <!-- Deep Indigo -->
+    <color name="gradientCenter">#3F51B5</color>        <!-- Indigo -->
+    <color name="gradientEnd">#7986CB</color>           <!-- Light Indigo -->
+
+    <!-- Status Colors -->
+    <color name="successColor">#4CAF50</color>          <!-- Green -->
+    <color name="warningColor">#FFC107</color>          <!-- Amber -->
+    <color name="errorColor">#F44336</color>            <!-- Red -->
+    <color name="infoColor">#2196F3</color>             <!-- Blue -->
+
+    <!-- Standard Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
 </resources>

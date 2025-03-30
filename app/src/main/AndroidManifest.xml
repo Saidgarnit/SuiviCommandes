@@ -23,6 +23,12 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AdminActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -33,16 +33,24 @@ android {
 }
 
 dependencies {
-    implementation("com.google.firebase:firebase-auth:21.0.1")
+    // Use the BoM (Bill of Materials) to manage Firebase versions
+    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
 
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    implementation(libs.firebase.auth)
+    // Firebase dependencies (versions managed by BoM)
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+    // UI dependencies
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // Authentication-related dependencies
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
+
+    // Test dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

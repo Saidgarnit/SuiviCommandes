@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="textView" type="id" />
+    <item name="adminWelcomeMessage" type="id" />
+    <item name="adminEmailTextView" type="id" />
+    <item name="manageUsersButton" type="id" />
+    <item name="viewAnalyticsButton" type="id" />
+    <item name="configSystemButton" type="id" />
 </resources>
