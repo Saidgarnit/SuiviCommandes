@@ -26,7 +26,7 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Or
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_admin_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
         return new OrderViewHolder(view);
     }
 
@@ -42,22 +42,14 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Or
                 ? dateFormat.format(order.getOrderDate())
                 : "Date not available";
 
-        // Create a proper order summary
-        StringBuilder orderTitle = new StringBuilder();
-        if (order.getItems() != null && !order.getItems().isEmpty()) {
-            orderTitle.append("Order #")
-                    .append(order.getOrderId().substring(0, 5))
-                    .append("...");
-        } else if (order.getItemName() != null) {
-            orderTitle.append(order.getItemName());
-        } else {
-            orderTitle.append("Order #")
-                    .append(order.getOrderId().substring(0, 5))
-                    .append("...");
-        }
-        holder.orderTitleTextView.setText(orderTitle.toString());
+        // 1. Simplified order title - just order ID
+        String orderTitle = "Order #" + order.getOrderId().substring(0, Math.min(5, order.getOrderId().length())) + "...";
+        holder.itemNameTextView.setText(orderTitle);
 
-        // Show detailed items list
+        // 2. Show status with date together
+        holder.itemStatusTextView.setText("Status: " + order.getOrderStatus() + " (" + orderDate + ")");
+
+        // 3. Show detailed item list in separate element
         StringBuilder itemDetails = new StringBuilder();
         if (order.getItems() != null && !order.getItems().isEmpty()) {
             for (CartItem item : order.getItems()) {
@@ -80,16 +72,19 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Or
         } else {
             itemDetails.append("No item details available");
         }
-        holder.itemDetailsTextView.setText(itemDetails.toString());
+        holder.orderItemsTextView.setText(itemDetails.toString());
 
-        // Show status and date
-        holder.statusTextView.setText("Current Status: " + order.getOrderStatus() + " (" + orderDate + ")");
-
-        // Show total price
+        // 4. Show total price
         double totalPrice = order.getTotalAmount();
-        holder.totalTextView.setText("Total: " + currencyFormat.format(totalPrice));
+        if (totalPrice <= 0 && order.getItems() != null) {
+            // If total amount isn't set, calculate it from items
+            for (CartItem item : order.getItems()) {
+                totalPrice += item.getTotalPrice();
+            }
+        }
+        holder.itemPriceTextView.setText("Total: " + currencyFormat.format(totalPrice));
 
-        // Set up the status spinner for admin
+        // 5. Set up the status spinner for admin
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 holder.itemView.getContext(),
                 R.array.order_status_array,
@@ -97,17 +92,17 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Or
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holder.statusSpinner.setAdapter(adapter);
 
-        // Set current status
-        int position1 = 0;
+        // 6. Set current status
+        int spinnerPosition = 0;
         for (int i = 0; i < adapter.getCount(); i++) {
             if (adapter.getItem(i).toString().equals(order.getOrderStatus())) {
-                position1 = i;
+                spinnerPosition = i;
                 break;
             }
         }
-        holder.statusSpinner.setSelection(position1);
+        holder.statusSpinner.setSelection(spinnerPosition);
 
-        // Handle status changes
+        // 7. Handle status changes
         holder.statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             private boolean isInitial = true;
 
@@ -138,18 +133,18 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Or
     }
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView orderTitleTextView;
-        TextView itemDetailsTextView;
-        TextView statusTextView;
-        TextView totalTextView;
+        TextView itemNameTextView;
+        TextView itemStatusTextView;
+        TextView orderItemsTextView;
+        TextView itemPriceTextView;
         Spinner statusSpinner;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
-            orderTitleTextView = itemView.findViewById(R.id.orderTitleTextView);
-            itemDetailsTextView = itemView.findViewById(R.id.itemDetailsTextView);
-            statusTextView = itemView.findViewById(R.id.statusTextView);
-            totalTextView = itemView.findViewById(R.id.totalTextView);
+            itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
+            itemStatusTextView = itemView.findViewById(R.id.itemStatusTextView);
+            orderItemsTextView = itemView.findViewById(R.id.orderItemsTextView);
+            itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
             statusSpinner = itemView.findViewById(R.id.statusSpinner);
         }
     }

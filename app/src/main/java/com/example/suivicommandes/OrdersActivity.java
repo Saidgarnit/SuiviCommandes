@@ -3,7 +3,6 @@ package com.example.suivicommandes;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +19,10 @@ public class OrdersActivity extends AppCompatActivity {
     private static final String TAG = "OrdersActivity";
     private RecyclerView ordersRecyclerView;
     private List<Order> orderList = new ArrayList<>();
-    private OrderAdapter orderAdapter;
+    private ClientOrderAdapter clientOrderAdapter; // Declare this at the class level
     private TextView noOrdersTextView;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-// Inside OrdersActivity.java - update the onCreate method:
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +52,18 @@ public class OrdersActivity extends AppCompatActivity {
             // Set up RecyclerView with CLIENT-SPECIFIC adapter
             ordersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            // Use the new ClientOrderAdapter explicitly
+            // Initialize the adapter here - BEFORE use
             clientOrderAdapter = new ClientOrderAdapter(orderList);
             ordersRecyclerView.setAdapter(clientOrderAdapter);
 
             // Fetch orders
             fetchOrders();
         } catch (Exception e) {
+            Log.e(TAG, "Error initializing OrdersActivity", e);
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    // Update the processOrderSnapshot method to work with the new adapter:
     private void processOrderSnapshot(com.google.firebase.firestore.QuerySnapshot snapshot) {
         try {
             orderList.clear();
@@ -79,9 +77,13 @@ public class OrdersActivity extends AppCompatActivity {
                         order.setOrderId(doc.getId());
                     }
 
-                    orderList.add(order);
+                    // Add null checks for safety
+                    if (order.getUserId() != null && order.getUserId().equals(auth.getCurrentUser().getUid())) {
+                        orderList.add(order);
+                        Log.d(TAG, "Added order: " + order.getOrderId());
+                    }
                 } catch (Exception e) {
-                    // Log error but continue processing other orders
+                    Log.e(TAG, "Error processing order document", e);
                 }
             }
 
@@ -96,13 +98,13 @@ public class OrdersActivity extends AppCompatActivity {
                 noOrdersTextView.setVisibility(View.GONE);
                 ordersRecyclerView.setVisibility(View.VISIBLE);
             }
+
+            // Log the results
+            Log.d(TAG, "Processed " + orderList.size() + " orders for current user");
         } catch (Exception e) {
-            // Log error handling
+            Log.e(TAG, "Error processing order snapshot", e);
         }
     }
-
-    // Add this field to the class
-    private ClientOrderAdapter clientOrderAdapter;
 
     private void fetchOrders() {
         try {
@@ -116,29 +118,7 @@ public class OrdersActivity extends AppCompatActivity {
             String userId = auth.getCurrentUser().getUid();
             Log.d(TAG, "Fetching orders for user ID: " + userId);
 
-            // IMPORTANT: Debug all orders to see what's in the database
-            db.collection("orders").get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "All orders in database: " + task.getResult().size());
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, "Order ID: " + document.getId() +
-                                ", User ID: " + document.getString("userId"));
-                    }
-                }
-            });
-
-            // Try both direct get and snapshot listener approaches
-            // Approach 1: Direct get
-            db.collection("orders")
-                    .whereEqualTo("userId", userId)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        Log.d(TAG, "Direct query found " + queryDocumentSnapshots.size() + " orders");
-                        processOrderSnapshot(queryDocumentSnapshots);
-                    })
-                    .addOnFailureListener(e -> Log.e(TAG, "Error with direct query", e));
-
-            // Approach 2: Snapshot listener (will update in real-time)
+            // Use only ONE approach - the snapshot listener for real-time updates
             db.collection("orders")
                     .whereEqualTo("userId", userId)
                     .addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -158,7 +138,6 @@ public class OrdersActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {

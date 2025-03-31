@@ -1,36 +1,51 @@
 package com.example.suivicommandes;
 
-public class CartItem {
-    private String itemId;
+import java.io.Serializable;
+import java.util.Objects;
+
+public class CartItem implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String id;
     private String name;
     private double price;
-    private String description;
-    private String image;
     private int quantity;
+    private String image;
 
+    // Default constructor
     public CartItem() {
-        // Required empty constructor for Firebase
+        this.quantity = 1;
     }
 
-    public CartItem(String itemId, String name, double price, String description, String image, int quantity) {
-        this.itemId = itemId;
+    // Constructor for Item conversion
+    public CartItem(Item item) {
+        this.id = item.getItemId();
+        this.name = item.getName();
+        this.price = item.getPrice();
+        this.quantity = 1;
+        this.image = item.getImage();
+    }
+
+    // Full constructor
+    public CartItem(String id, String name, double price, int quantity, String image) {
+        this.id = id;
         this.name = name;
         this.price = price;
-        this.description = description;
-        this.image = image;
         this.quantity = quantity;
+        this.image = image;
     }
 
-    public String getItemId() {
-        return itemId;
+    // Getters and setters
+    public String getId() {
+        return id != null ? id : "";
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
-        return name;
+        return name != null ? name : "";
     }
 
     public void setName(String name) {
@@ -42,15 +57,15 @@ public class CartItem {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.price = price >= 0 ? price : 0;
     }
 
-    public String getDescription() {
-        return description;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity > 0 ? quantity : 1;
     }
 
     public String getImage() {
@@ -61,15 +76,23 @@ public class CartItem {
         this.image = image;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
+    // Helper method to calculate total price
     public double getTotalPrice() {
         return price * quantity;
+    }
+
+    // For comparison in ArrayLists
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CartItem cartItem = (CartItem) o;
+        return Objects.equals(id, cartItem.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

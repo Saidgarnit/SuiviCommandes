@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -83,43 +82,34 @@ public class AdminActivity extends AppCompatActivity implements OrderAdapter.Ord
         db.collection("orders")
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
+                        Log.e(TAG, "Error listening for order updates", error);
                         Toast.makeText(AdminActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (value != null) {
                         ordersList.clear();
+                        Log.d(TAG, "Retrieved " + value.size() + " orders total");
+
                         for (QueryDocumentSnapshot document : value) {
                             try {
-                                // Manually extract order data for robustness
-                                Order order = new Order();
-                                order.setOrderId(document.getId());
-                                order.setUserId(document.getString("userId"));
-                                order.setUserEmail(document.getString("userEmail"));
-                                order.setOrderStatus(document.getString("orderStatus"));
+                                Order order = document.toObject(Order.class);
 
-                                if (document.contains("itemName")) {
-                                    order.setItemName(document.getString("itemName"));
+                                // Ensure orderId is set correctly
+                                if (order.getOrderId() == null || order.getOrderId().isEmpty()) {
+                                    order.setOrderId(document.getId());
                                 }
 
-                                if (document.contains("itemPrice")) {
-                                    Double price = document.getDouble("itemPrice");
-                                    if (price != null) order.setItemPrice(price);
-                                }
-
-                                if (document.contains("totalAmount")) {
-                                    Double total = document.getDouble("totalAmount");
-                                    if (total != null) order.setTotalAmount(total);
-                                }
-
-                                if (document.contains("orderDate")) {
-                                    order.setOrderDate(document.getDate("orderDate"));
+                                // Additional data validation
+                                if (order.getUserId() == null || order.getUserId().isEmpty()) {
+                                    Log.w(TAG, "Order " + document.getId() + " has no userId, skipping");
+                                    continue;
                                 }
 
                                 ordersList.add(order);
                                 Log.d(TAG, "Added order: " + order.getOrderId() + " for user: " + order.getUserEmail());
                             } catch (Exception e) {
-                                Log.e(TAG, "Error processing order document", e);
+                                Log.e(TAG, "Error processing order document " + document.getId(), e);
                             }
                         }
 
@@ -137,15 +127,16 @@ public class AdminActivity extends AppCompatActivity implements OrderAdapter.Ord
             return;
         }
 
-        DocumentReference orderRef = db.collection("orders").document(orderId);
+        Log.d(TAG, "Updating order " + orderId + " status to: " + newStatus);
 
-        // Update the order status
-        orderRef.update("orderStatus", newStatus)
+        db.collection("orders").document(orderId)
+                .update("orderStatus", newStatus, "lastUpdated", new java.util.Date())
                 .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Order status updated successfully");
                     Toast.makeText(AdminActivity.this, "Order status updated to " + newStatus, Toast.LENGTH_SHORT).show();
-                    // Removed notification code
                 })
                 .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error updating order status", e);
                     Toast.makeText(AdminActivity.this, "Error updating status: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }

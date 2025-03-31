@@ -33,5 +33,14 @@
         <activity android:name=".CartActivity" android:exported="false" />
         <activity android:name=".RegisterActivity" android:exported="false" />
         <activity android:name=".OrderConfirmationActivity" android:exported="false" />
+
+        <!-- Add ItemDetailsActivity -->
+        <activity
+            android:name=".ItemDetailsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 </manifest>
