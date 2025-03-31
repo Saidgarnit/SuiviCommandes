@@ -1,15 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Commande Tracker</string>
-    <string name="app_logo">Commande Tracker Logo</string>
-    <string name="welcome_message">Welcome to Commande Tracker</string>
-    <string name="welcome_subtitle">Track your orders efficiently</string>
+    <string name="app_name">SuiviCommandes</string>
+    <string name="welcome_message">Bienvenue</string>
+    <string name="welcome_subtitle">Suivez vos commandes en temps réel</string>
     <string name="email_hint">Email</string>
-    <string name="password_hint">Password</string>
-    <string name="sign_in">Sign In</string>
-    <string name="register">Create an account</string>
-    <string name="forgot_password">Forgot password?</string>
-    <string name="no_account">Don\'t have an account?</string>
-    <string name="register_now">Register now</string>
-    <string name="already_account">Already have an account?</string>
-    <string name="sign_in_now">Sign in</string>
+    <string name="password_hint">Mot de passe</string>
+    <string name="forgot_password">Mot de passe oublié?</string>
+    <string name="sign_in">Se connecter</string>
+    <string name="no_account">Pas encore de compte?</string>
+    <string name="register_now">S\'inscrire</string>
+    <string name="register">S\'inscrire</string>
+    <string name="already_account">Déjà un compte?</string>
+    <string name="sign_in_now">Se connecter</string>
+    <string name="app_logo">Logo de l\'application</string>
+    <string name="shopping_cart">Panier</string>
 </resources>

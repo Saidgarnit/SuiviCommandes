@@ -1,45 +1,40 @@
 package com.example.suivicommandes;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
-
-
-import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.DocumentReference;
 
 public class ItemDetailsActivity extends AppCompatActivity {
 
     private TextView itemName, itemPrice, itemDescription;
     private ImageView itemImage;
+    private Button orderButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
 
+        // Set up toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Product Details");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         // Initialize Views
         itemName = findViewById(R.id.itemNameDetail);
         itemPrice = findViewById(R.id.itemPriceDetail);
         itemDescription = findViewById(R.id.itemDescriptionDetail);
         itemImage = findViewById(R.id.itemImageDetail);
+        orderButton = findViewById(R.id.orderButton);
 
         // Get the item details from the Intent
         Item item = (Item) getIntent().getSerializableExtra("item");
@@ -49,41 +44,43 @@ public class ItemDetailsActivity extends AppCompatActivity {
             itemName.setText(item.getName());
             itemPrice.setText("Price: $" + item.getPrice());
             itemDescription.setText(item.getDescription());
-            Glide.with(this).load(item.getImage()).into(itemImage);
+
+            if (item.getImage() != null && !item.getImage().isEmpty()) {
+                Glide.with(this).load(item.getImage()).into(itemImage);
+            }
         }
 
-        // Handle Order Button Click
-        findViewById(R.id.orderButton).setOnClickListener(v -> placeOrder(item));
+        // Handle Order Button Click - Change to Add to Cart functionality
+        orderButton.setText("Add to Cart");
+        orderButton.setOnClickListener(v -> {
+            if (item != null) {
+                addToCart(item);
+            }
+        });
     }
 
-    private void placeOrder(Item item) {
-        // Get Firebase instance
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private void addToCart(Item item) {
+        CartManager cartManager = CartManager.getInstance(this);
+        cartManager.addItem(item);
 
-        if (auth.getCurrentUser() != null) {
-            // Create order object with initial status "pending"
-            Order order = new Order(
-                    item.getName(),
-                    item.getPrice(),
-                    item.getDescription(),
-                    item.getImage(),
-                    auth.getCurrentUser().getUid(),
-                    "pending" // Default status
-            );
+        // Show feedback
+        Toast.makeText(ItemDetailsActivity.this, "Added to cart", Toast.LENGTH_SHORT).show();
 
-            // Save order to Firestore
-            db.collection("orders")
-                    .add(order)
-                    .addOnSuccessListener(documentReference -> {
-                        Toast.makeText(ItemDetailsActivity.this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
-                        finish(); // Close the activity after placing the order
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(ItemDetailsActivity.this, "Failed to place order: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-        }
+        // Option to go to cart
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("Item Added to Cart")
+                .setMessage("Do you want to view your cart or continue shopping?")
+                .setPositiveButton("View Cart", (dialog, which) -> {
+                    Intent intent = new Intent(ItemDetailsActivity.this, CartActivity.class);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Continue Shopping", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
-

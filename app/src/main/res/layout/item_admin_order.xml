@@ -15,41 +15,48 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/itemNameTextView"
+            android:id="@+id/orderTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Item Name"
+            android:text="Order #12345"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/itemStatusTextView"
+            android:id="@+id/itemDetailsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Status: Pending"
+            android:text="• Item 1 (2 × $129.00)\n• Item 2 (1 × $50.00)"
             android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="8dp" />
 
         <TextView
-            android:id="@+id/itemPriceTextView"
+            android:id="@+id/statusTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="$0.00"
+            android:text="Current Status: Pending (Mar 31, 2025)"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/totalTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total: $358.00"
             android:textSize="16sp"
-            android:layout_marginTop="4dp" />
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="16dp">
 
             <TextView
-                android:id="@+id/changeStatusLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Change Status:"
-                android:textSize="14sp"
                 android:layout_gravity="center_vertical" />
 
             <Spinner

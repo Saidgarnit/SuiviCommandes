@@ -3,26 +3,21 @@ package com.example.suivicommandes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +36,13 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Find and set up cart button
+        ImageButton cartButton = findViewById(R.id.cartButton);
+        cartButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, CartActivity.class);
+            startActivity(intent);
+        });
 
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -80,6 +82,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // Set up logout button
         logoutButton.setOnClickListener(v -> signOut());
+
+        // Listen for order status changes
+        listenForOrderStatusChanges(currentUser.getUid());
     }
 
     private void fetchItems() {
@@ -110,5 +115,24 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
+    private void listenForOrderStatusChanges(String userId) {
+        db.collection("orders")
+                .whereEqualTo("userId", userId)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Toast.makeText(HomeActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            if (dc.getType() == DocumentChange.Type.MODIFIED) {
+                                // Order status changed, but we no longer send notifications
+                                // We keep this listener in case we want to update UI or show in-app alerts
+                            }
+                        }
+                    }
+                });
+    }
 }
