@@ -129,8 +129,9 @@ public class AdminActivity extends AppCompatActivity implements OrderAdapter.Ord
 
         Log.d(TAG, "Updating order " + orderId + " status to: " + newStatus);
 
+        // CORRECTED: using "orderStatus" field name instead of "status"
         db.collection("orders").document(orderId)
-                .update("status", newStatus, "lastUpdated", new java.util.Date()) // Ensure 'status' is correct
+                .update("orderStatus", newStatus, "lastUpdated", new java.util.Date())
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Order status updated successfully");
                     Toast.makeText(AdminActivity.this, "Order status updated to " + newStatus, Toast.LENGTH_SHORT).show();
@@ -140,7 +141,6 @@ public class AdminActivity extends AppCompatActivity implements OrderAdapter.Ord
                     Toast.makeText(AdminActivity.this, "Error updating status: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-
 
     private void signOut() {
         auth.signOut();

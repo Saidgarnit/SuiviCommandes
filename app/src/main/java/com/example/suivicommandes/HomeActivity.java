@@ -29,12 +29,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "HomeActivity";
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private TextView userEmailTextView;
@@ -61,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
             startActivity(intent);
         });
+
         // Set up the toolbar
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -81,7 +81,6 @@ public class HomeActivity extends AppCompatActivity {
         userEmailTextView = findViewById(R.id.userEmailTextView);
         logoutButton = findViewById(R.id.logoutButton);
         recyclerView = findViewById(R.id.recyclerView);
-
 
         // Display user email
         userEmailTextView.setText("Signed in as: " + currentUser.getEmail());
@@ -132,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
     private void sendOrderStatusNotification(String status) {
         String channelId = "order_status_channel";
 
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, OrdersActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
@@ -151,11 +150,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void listenForOrderStatusChanges(String userId) {
+        Log.d(TAG, "Starting to listen for order status changes for user: " + userId);
+
         db.collection("orders")
                 .whereEqualTo("userId", userId)
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
-                        Log.e("Firestore", "Error listening for order updates", e);
+                        Log.e(TAG, "Error listening for order updates", e);
                         return;
                     }
 
@@ -163,10 +164,16 @@ public class HomeActivity extends AppCompatActivity {
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             if (dc.getType() == DocumentChange.Type.MODIFIED) {
                                 DocumentSnapshot document = dc.getDocument();
-                                String orderStatus = document.getString("status");
+
+                                // CORRECTED: using "orderStatus" field name instead of "status"
+                                String orderStatus = document.getString("orderStatus");
+                                String orderId = document.getId();
+
+                                Log.d(TAG, "Order changed - ID: " + orderId + ", Status: " + orderStatus);
 
                                 if (orderStatus != null) {
                                     sendOrderStatusNotification(orderStatus);
+                                    Log.d(TAG, "Sent notification for order status change to: " + orderStatus);
                                 }
                             }
                         }
