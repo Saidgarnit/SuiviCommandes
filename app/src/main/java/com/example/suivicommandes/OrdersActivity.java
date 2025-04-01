@@ -35,15 +35,7 @@ public class OrdersActivity extends AppCompatActivity {
             auth = FirebaseAuth.getInstance();
             db = FirebaseFirestore.getInstance();
 
-            // Set up toolbar
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            if (toolbar != null) {
-                setSupportActionBar(toolbar);
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setTitle("My Orders");
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                }
-            }
+
 
             // Find views
             ordersRecyclerView = findViewById(R.id.ordersRecyclerView);

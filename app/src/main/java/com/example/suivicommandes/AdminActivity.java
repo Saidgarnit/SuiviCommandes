@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class AdminActivity extends AppCompatActivity implements OrderAdapter.Ord
     private RecyclerView ordersRecyclerView;
     private List<Order> ordersList = new ArrayList<>();
     private UserOrdersAdapter userOrdersAdapter;
+
+    // Notification helper methods and constants (added)
+    private static final String CHANNEL_ID = "order_status_channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,16 +133,36 @@ public class AdminActivity extends AppCompatActivity implements OrderAdapter.Ord
 
         Log.d(TAG, "Updating order " + orderId + " status to: " + newStatus);
 
-        // CORRECTED: using "orderStatus" field name instead of "status"
+        // Update the order status in Firestore
         db.collection("orders").document(orderId)
                 .update("orderStatus", newStatus, "lastUpdated", new java.util.Date())
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Order status updated successfully");
                     Toast.makeText(AdminActivity.this, "Order status updated to " + newStatus, Toast.LENGTH_SHORT).show();
+
+                    // Send notification to the user (customer)
+                    sendOrderStatusNotification(orderId, newStatus);
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error updating order status", e);
                     Toast.makeText(AdminActivity.this, "Error updating status: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void sendOrderStatusNotification(String orderId, String newStatus) {
+        // Retrieve the user's email from the order data
+        db.collection("orders").document(orderId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String userEmail = documentSnapshot.getString("userEmail");
+
+                        // Send a notification to the user (customer)
+                        if (userEmail != null) {
+                            Log.d(TAG, "Sending notification to user: " + userEmail);
+                            NotificationHelper.sendOrderStatusNotification(this, userEmail, newStatus);
+                        }
+                    }
                 });
     }
 
