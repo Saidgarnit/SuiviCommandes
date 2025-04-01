@@ -39,6 +39,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private TextView userEmailTextView;
     private ImageButton logoutButton;
+    private ImageButton notificationButton;
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList = new ArrayList<>();
@@ -55,6 +56,11 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        notificationButton = findViewById(R.id.notificationButton);
+        notificationButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
+            startActivity(intent);
+        });
         // Set up the toolbar
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -75,6 +81,7 @@ public class HomeActivity extends AppCompatActivity {
         userEmailTextView = findViewById(R.id.userEmailTextView);
         logoutButton = findViewById(R.id.logoutButton);
         recyclerView = findViewById(R.id.recyclerView);
+
 
         // Display user email
         userEmailTextView.setText("Signed in as: " + currentUser.getEmail());

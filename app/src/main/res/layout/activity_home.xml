@@ -12,20 +12,20 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="12dp"
             android:orientation="vertical">
 
             <!-- Top Section (Welcome Text and Buttons) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginBottom="16dp"> <!-- Increased marginBottom here -->
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"> <!-- Increased marginBottom here -->
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -52,47 +52,66 @@
 
                 </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/logoutButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@android:color/transparent"
-                    android:padding="0dp"
-                    android:stateListAnimator="@null"
-                    app:srcCompat="@drawable/ic_logout" />
+
 
                 <ImageButton
                     android:id="@+id/ordersButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+
                     android:background="@android:color/transparent"
                     android:padding="0dp"
                     android:stateListAnimator="@null"
-                    android:layout_weight="1"
                     app:srcCompat="@drawable/ic_order" />
+
                 <ImageButton
                     android:id="@+id/cartButton"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:background="@android:color/transparent"
                     android:padding="0dp"
                     android:stateListAnimator="@null"
                     app:srcCompat="@drawable/ic_cart" />
+
+                <ImageButton
+                    android:id="@+id/notificationButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:stateListAnimator="@null"
+                    app:srcCompat="@drawable/ic_notification"/>
+
+                <ImageButton
+                    android:id="@+id/logoutButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:stateListAnimator="@null"
+                    app:srcCompat="@drawable/ic_logout" />
             </LinearLayout>
 
             <!-- RecyclerView -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cst"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="32dp"
-                android:padding="10dp"
-
                 android:clipToPadding="false"
+                android:padding="10dp"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                tools:listitem="@layout/item_card"/>
+                tools:listitem="@layout/item_card" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -3,28 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor">
+    android:background="@color/cream">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Commande Confirmée"
-        app:titleTextColor="@color/white" />
 
     <ImageView
         android:id="@+id/successIcon"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="32dp"
         android:src="@drawable/ic_check_circle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/colorPrimary" />
 
     <TextView
@@ -33,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Commande Réussie!"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +37,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:gravity="center"
+        android:textColor="@color/white"
         android:text="Merci pour votre commande. Vous recevrez des notifications lorsque le statut de votre commande changera."
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@color/lighter"
             android:padding="16dp">
 
             <TextView
@@ -77,11 +69,13 @@
                 android:layout_height="wrap_content"
                 android:text="Détails de la commande"
                 android:textSize="18sp"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="#DDDDDD" />
@@ -92,6 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Commande #123456"
+                android:textColor="@color/white"
+
                 android:textSize="16sp" />
 
             <TextView
@@ -100,6 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="31 mars 2025, 11:36"
+                android:textColor="@color/white"
+
                 android:textSize="16sp" />
 
             <TextView
@@ -107,7 +105,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Statut: En attente"
+                android:text="Statut: En attente"                android:textColor="@color/white"
+
                 android:textSize="16sp" />
 
             <TextView
@@ -116,6 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="3 articles"
+                android:textColor="@color/white"
+
                 android:textSize="16sp" />
 
             <TextView
@@ -125,7 +126,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Total: $123.45"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -133,6 +136,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:background="@color/lighter"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:orientation="horizontal"
@@ -148,7 +152,8 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:text="Continuer les achats"
-            android:textColor="@color/colorPrimary" />
+            android:textColorHint="@color/white"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/viewOrdersButton"
@@ -156,9 +161,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/white"
             android:text="Voir mes commandes"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
