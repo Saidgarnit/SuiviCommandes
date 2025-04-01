@@ -14,4 +14,5 @@
     <string name="sign_in_now">Se connecter</string>
     <string name="app_logo">Logo de l\'application</string>
     <string name="shopping_cart">Panier</string>
+    <string name="default_notification_channel_id" />
 </resources>

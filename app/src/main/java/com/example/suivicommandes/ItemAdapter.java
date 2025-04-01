@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -25,9 +26,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private final NumberFormat currencyFormat;
     private final RequestOptions imageOptions;
 
+
     public ItemAdapter(Context context, List<Item> itemList) {
         this.context = context;
         this.itemList = itemList;
+
         this.currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
         this.imageOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -54,7 +57,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             return new ItemViewHolder(fallbackView);
         }
     }
-
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         try {
@@ -66,6 +68,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
 
             bindItemData(holder, item);
+            setItemHeight(holder); // Apply random height here
             setupItemClickListener(holder, item);
 
         } catch (Exception e) {
@@ -74,14 +77,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         }
     }
 
-    private void bindItemData(@NonNull ItemViewHolder holder, Item item) {
-        // Set item name with fallback
-        holder.nameTextView.setText(getSafeString(item.getName(), "Unnamed Product"));
+    private int getRandomHeight() {
+        int minHeight = 1100;  // Adjust this value based on your design
+        int maxHeight = 1500;
+        return Math.max(minHeight, Math.min(maxHeight, minHeight + (int) (Math.random() * (maxHeight - minHeight))));
+    }
 
-        // Format and set price
+    private void bindItemData(@NonNull ItemViewHolder holder, Item item) {
+        // Set item name
+        holder.nameTextView.setText(getSafeString(item.getName(), "Unnamed Product"));
+        holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.lighter));
+        holder.nameTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
+        holder.priceTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
+        holder.descriptionTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
+        // Set price
         holder.priceTextView.setText(formatPrice(item.getPrice()));
 
-        // Set description with fallback
+        // Set description (ensure this is set properly)
         holder.descriptionTextView.setText(getSafeString(item.getDescription(), "No description available"));
 
         // Load image with Glide
@@ -203,4 +215,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             itemImageView = itemView.findViewById(R.id.itemImage);
         }
     }
+    private void setItemHeight(@NonNull ItemViewHolder holder) {
+        ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+        params.height = getRandomHeight();
+        holder.itemView.setLayoutParams(params);
+    }
+
 }

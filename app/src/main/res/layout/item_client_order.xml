@@ -6,12 +6,14 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
+    android:background="@color/cream"
     app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/lighter"
         android:padding="16dp">
 
         <TextView
@@ -19,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Order #12345 • 4 items"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -28,6 +31,7 @@
             android:layout_height="wrap_content"
             android:text="• Item 1 (2 × $129.00)\n• Item 2 (1 × $50.00)"
             android:textSize="14sp"
+            android:textColor="@color/white"
             android:layout_marginTop="8dp" />
 
         <TextView
@@ -36,6 +40,7 @@
             android:layout_height="wrap_content"
             android:text="Status: Pending (Mar 31, 2025)"
             android:textSize="14sp"
+            android:textColor="@color/white"
             android:layout_marginTop="8dp" />
 
         <TextView

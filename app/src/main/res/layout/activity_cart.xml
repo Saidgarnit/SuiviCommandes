@@ -4,34 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@color/lighter"
     tools:context=".CartActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Mon Panier"
-        app:titleTextColor="@color/white" />
 
     <TextView
         android:id="@+id/cartTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Votre Panier"
+        android:text="Your Cart"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/white"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
+
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -57,7 +48,8 @@
         android:id="@+id/totalLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@drawable/cream_top_bg"
+
         android:elevation="8dp"
         android:orientation="vertical"
         android:padding="16dp"
@@ -69,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:text="Total: $0.00"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -89,7 +82,7 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:text="Continuer"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/checkoutButton"
@@ -97,9 +90,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/white"
             android:text="Commander"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/black" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

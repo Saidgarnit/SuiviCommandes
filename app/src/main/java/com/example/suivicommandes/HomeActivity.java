@@ -1,13 +1,20 @@
 package com.example.suivicommandes;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,12 +29,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+
 public class HomeActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private TextView userEmailTextView;
-    private Button logoutButton;
+    private ImageButton logoutButton;
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList = new ArrayList<>();
@@ -45,12 +56,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         // Set up the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        Button ordersButton = findViewById(R.id.ordersButton);
+        ImageButton ordersButton = findViewById(R.id.ordersButton);
         ordersButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, OrdersActivity.class);
             startActivity(intent);
@@ -59,7 +67,6 @@ public class HomeActivity extends AppCompatActivity {
         // Check if user is authenticated
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser == null) {
-            // Not logged in, redirect to login
             redirectToLogin();
             return;
         }
@@ -72,8 +79,8 @@ public class HomeActivity extends AppCompatActivity {
         // Display user email
         userEmailTextView.setText("Signed in as: " + currentUser.getEmail());
 
-        // Set up RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // 🔥 Change RecyclerView to StaggeredGridLayoutManager
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         itemAdapter = new ItemAdapter(this, itemList);
         recyclerView.setAdapter(itemAdapter);
 
@@ -83,7 +90,7 @@ public class HomeActivity extends AppCompatActivity {
         // Set up logout button
         logoutButton.setOnClickListener(v -> signOut());
 
-        // Listen for order status changes
+        createNotificationChannel();
         listenForOrderStatusChanges(currentUser.getUid());
     }
 
@@ -115,24 +122,65 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
+    private void sendOrderStatusNotification(String status) {
+        String channelId = "order_status_channel";
+
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Order Update")
+                .setContentText("Your order status has changed to: " + status)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify((int) System.currentTimeMillis(), notificationBuilder.build());
+        }
+    }
+
     private void listenForOrderStatusChanges(String userId) {
         db.collection("orders")
                 .whereEqualTo("userId", userId)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Toast.makeText(HomeActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.e("Firestore", "Error listening for order updates", e);
+                        return;
+                    }
 
+                    if (snapshots != null) {
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             if (dc.getType() == DocumentChange.Type.MODIFIED) {
-                                // Order status changed, but we no longer send notifications
-                                // We keep this listener in case we want to update UI or show in-app alerts
+                                DocumentSnapshot document = dc.getDocument();
+                                String orderStatus = document.getString("status");
+
+                                if (orderStatus != null) {
+                                    sendOrderStatusNotification(orderStatus);
+                                }
                             }
                         }
                     }
                 });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "order_status_channel";
+            String channelName = "Order Status Updates";
+            String channelDescription = "Notifies users when their order status changes";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+            channel.setDescription(channelDescription);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 }
