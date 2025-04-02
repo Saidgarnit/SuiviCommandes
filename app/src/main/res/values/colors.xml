@@ -19,6 +19,7 @@
     <color name="textColorSecondary">#757575</color>    <!-- Medium Gray -->
     <color name="textColorHint">#9E9E9E</color>         <!-- Light Gray -->
     <color name="textColorWhite">#FFFFFF</color>        <!-- White -->
+    <color name="backgroundColorDark">#121212</color>
 
     <!-- Background Colors -->
     <color name="backgroundColor">#F5F5F5</color>       <!-- Off-White -->

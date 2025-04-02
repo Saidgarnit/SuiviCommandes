@@ -37,6 +37,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
     implementation ("com.google.code.gson:gson:2.8.8")
     implementation ("com.google.firebase:firebase-database:20.0.5")
+    implementation ("com.google.android.material:material:1.4.0")
+
 
 
     // Firebase dependencies (versions managed by BoM)
