@@ -2,7 +2,6 @@
 
 SuiviCommande is a mobile application designed for order tracking and management using Firebase. The application provides a seamless experience for users to track their orders, view details, and receive notifications on order status updates.
 
-![SuiviCommande Logo](https://your-image-link.com/logo.png)
 
 ## Features
 
@@ -60,7 +59,6 @@ SuiviCommande is a mobile application designed for order tracking and management
 
 ### User Authentication
 
-![Sign In](https://your-image-link.com/sign-in.png)
 
 - **Sign In**: Users can sign in using their email and password.
 - **Register**: New users can register by providing their email and password.
@@ -68,7 +66,6 @@ SuiviCommande is a mobile application designed for order tracking and management
 
 ### Order Management
 
-![Order Management](https://your-image-link.com/order-management.png)
 
 - **View Orders**: Users can view their current and past orders.
 - **Order Details**: Users can view detailed information about an order, including item details and status.
@@ -76,7 +73,6 @@ SuiviCommande is a mobile application designed for order tracking and management
 
 ### Admin Dashboard
 
-![Admin Dashboard](https://your-image-link.com/admin-dashboard.png)
 
 - **Manage Orders**: Admins can view and manage all orders.
 - **Update Order Status**: Admins can update the status of orders.
