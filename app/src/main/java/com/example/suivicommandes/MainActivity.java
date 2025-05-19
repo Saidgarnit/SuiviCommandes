@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            // Show progress indicator
+            // Disable sign-in button to prevent multiple clicks
             signInButton.setEnabled(false);
 
             // Sign in with Firebase
@@ -132,19 +132,28 @@ public class MainActivity extends AppCompatActivity {
                         signInButton.setEnabled(true);
 
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "signIn: success");
                             FirebaseUser user = auth.getCurrentUser();
-                            Toast.makeText(MainActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
 
-                            // Check if this is the admin account
-                            if (user != null && user.getEmail() != null &&
-                                    user.getEmail().equals("said@gmail.com")) {
-                                Log.d(TAG, "Admin user detected, navigating to AdminActivity");
-                                navigateToAdmin();
+                            if (user != null && user.isEmailVerified()) {
+                                Log.d(TAG, "signIn: email verified");
+                                Toast.makeText(MainActivity.this, "Sign in successful", Toast.LENGTH_SHORT).show();
+
+                                // Check if this is the admin account
+                                if (user.getEmail() != null && user.getEmail().equals("said@gmail.com")) {
+                                    Log.d(TAG, "Admin user detected, navigating to AdminActivity");
+                                    navigateToAdmin();
+                                } else {
+                                    Log.d(TAG, "Regular user detected, navigating to HomeActivity");
+                                    navigateToHome();
+                                }
                             } else {
-                                Log.d(TAG, "Regular user detected, navigating to HomeActivity");
-                                navigateToHome();
+                                Log.w(TAG, "signIn: email not verified");
+                                Toast.makeText(MainActivity.this,
+                                        "Please verify your email before signing in.",
+                                        Toast.LENGTH_LONG).show();
+                                auth.signOut(); // Sign out unverified user
                             }
+
                         } else {
                             Log.w(TAG, "signIn: failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed: " +
@@ -158,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Sign in error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void checkUserRoleAndNavigate(FirebaseUser user) {
         if (user == null) return;

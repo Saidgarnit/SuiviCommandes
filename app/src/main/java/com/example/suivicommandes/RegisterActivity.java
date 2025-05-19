@@ -60,20 +60,19 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Exemple de regex pour au moins 8 caractères, une majuscule, une minuscule, un chiffre
+        // Regex: at least 8 characters, one uppercase, one lowercase, one digit
         String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
 
         if (password.isEmpty()) {
             passwordEditText.setError("Password is required");
-            passwordEditText.requestFocus(); // Added missing requestFocus
+            passwordEditText.requestFocus();
             return;
-        } else if (password.length() < 8) { // Augmenter la longueur
+        } else if (password.length() < 8) {
             passwordEditText.setError("Password must be at least 8 characters");
             passwordEditText.requestFocus();
             return;
         } else if (!password.matches(passwordPattern)) {
             passwordEditText.setError("Password must include uppercase, lowercase, and a number.");
-            // Idéalement, donner des indications plus précises sur ce qui manque.
             passwordEditText.requestFocus();
             return;
         }
@@ -90,47 +89,45 @@ public class RegisterActivity extends AppCompatActivity {
                         FirebaseUser user = auth.getCurrentUser();
                         Log.d(TAG, "Registration successful!");
 
-                        // Create user in Firestore with default role
                         if (user != null) {
-                            // Create a new user with a default "user" role
+                            // Save user data to Firestore
                             Map<String, Object> userData = new HashMap<>();
                             userData.put("email", email);
-                            userData.put("role", "user"); // Default role
+                            userData.put("role", "user");
                             userData.put("createdAt", System.currentTimeMillis());
 
-                            // Add user to Firestore
                             db.collection("users").document(user.getUid())
                                     .set(userData)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d(TAG, "User role saved to Firestore");
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.e(TAG, "Error saving user role", e);
-                                    });
+                                    .addOnSuccessListener(aVoid -> Log.d(TAG, "User role saved to Firestore"))
+                                    .addOnFailureListener(e -> Log.e(TAG, "Error saving user role", e));
 
                             // Send email verification
                             user.sendEmailVerification()
                                     .addOnCompleteListener(verificationTask -> {
                                         if (verificationTask.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this,
-                                                    "Registration successful. Verification email sent.",
-                                                    Toast.LENGTH_SHORT).show();
+                                                    "Registration successful. Verification email sent. Please verify before logging in.",
+                                                    Toast.LENGTH_LONG).show();
                                         } else {
                                             Toast.makeText(RegisterActivity.this,
-                                                    "Registration successful but failed to send verification email.",
+                                                    "Failed to send verification email.",
                                                     Toast.LENGTH_SHORT).show();
                                         }
                                     });
+
+                            // Force sign out to prevent automatic login
+                            auth.signOut();
                         }
 
                         // Navigate to login screen
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        finish(); // Close register activity
+                        finish();
+
                     } else {
                         Exception exception = task.getException();
-                        Log.e(TAG, "Registration failed", exception); // Log détaillé pour les développeurs
+                        Log.e(TAG, "Registration failed", exception);
                         String errorMessage;
                         if (exception instanceof FirebaseAuthUserCollisionException) {
                             errorMessage = "This email address is already in use.";
@@ -143,4 +140,5 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }
