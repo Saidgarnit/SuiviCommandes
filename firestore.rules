@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Utilisateurs:
+    // - L'utilisateur peut lire ses propres données.
+    // - L'utilisateur peut créer son propre document utilisateur (avec role='user').
+    // - L'utilisateur ne peut pas modifier son rôle.
+    // - Un admin peut lire/écrire les données utilisateur.
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId || request.auth.token.admin == true;
+      allow create: if request.auth.uid == userId && request.resource.data.role == 'user';
+      allow update: if request.auth.uid == userId && request.resource.data.role == resource.data.role; // Ne peut pas changer son propre rôle
+      allow update: if request.auth.token.admin == true; // Admin peut tout mettre à jour
+      allow delete: if request.auth.token.admin == true;
+    }
+
+    // Commandes:
+    // - L'utilisateur peut lire ses propres commandes.
+    // - L'utilisateur peut créer des commandes pour lui-même (userId doit correspondre).
+    // - L'utilisateur ne peut pas modifier ses commandes une fois passées (sauf admin).
+    // - Un admin peut lire toutes les commandes et mettre à jour leur statut.
+    match /orders/{orderId} {
+      allow read: if request.auth.uid == resource.data.userId || request.auth.token.admin == true;
+      allow create: if request.auth.uid == request.resource.data.userId;
+      // Pour les mises à jour, être plus granulaire:
+      // L'utilisateur ne peut pas mettre à jour une commande.
+      // L'admin peut mettre à jour le statut.
+      allow update: if request.auth.token.admin == true && request.resource.data.keys().hasOnly(['orderStatus', 'lastUpdated']); // Admin ne peut changer que certains champs
+      allow delete: if request.auth.token.admin == true;
+    }
+
+    // Articles (Items):
+    // - Tous les utilisateurs authentifiés peuvent lire les articles.
+    // - Seuls les admins peuvent créer/modifier/supprimer des articles.
+    match /items/{itemId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.token.admin == true;
+    }
+  }
+}
