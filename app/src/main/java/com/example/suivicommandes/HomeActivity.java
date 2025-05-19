@@ -130,14 +130,13 @@ public class HomeActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> showError("Error loading items: " + e.getMessage()));
     }
-
     private void setupOrderStatusListener() {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             listenForOrderStatusChanges(currentUser.getUid());
         }
     }
-
+//permission needed for android 13+
     private void requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
@@ -148,7 +147,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
-
+//channels needded for android 8+
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -165,7 +164,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
-
+//checks for order status changes in firestore.
     private void listenForOrderStatusChanges(String userId) {
         Log.d(TAG, "Starting order status listener for user: " + userId);
 
@@ -187,6 +186,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
     }
 
+//fetches orderid  ad orderstatus
     private void processOrderChange(DocumentSnapshot document) {
         String orderStatus = document.getString("orderStatus");
         String orderId = document.getId();
@@ -197,6 +197,8 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+//creates intent for notification
+//assigns notification to channel
     private void sendOrderStatusNotification(String orderId, String status) {
         String notificationMessage = "Order " + orderId + ": " + getString(R.string.order_status_changed, status);
 
@@ -246,7 +248,7 @@ public class HomeActivity extends AppCompatActivity {
         // Update notification count and UI
         updateUnreadNotificationCount();
     }
-
+//ui update for num of notif
     private void updateUnreadNotificationCount() {
         SharedPreferences sharedPreferences = getSharedPreferences("notifications_prefs", MODE_PRIVATE);
         Set<String> notificationsSet = sharedPreferences.getStringSet("notifications_key", new HashSet<>());
@@ -259,7 +261,7 @@ public class HomeActivity extends AppCompatActivity {
         updateNotificationIcon(unreadCount);
         mentionUnreadNotifications(unreadCount);
     }
-
+//change notif icon if red or unread
     private void updateNotificationIcon(int count) {
         ImageButton notificationButton = findViewById(R.id.notificationButton);
         if (count > 0) {

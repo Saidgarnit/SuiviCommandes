@@ -14,24 +14,23 @@ public class NotificationHelper {
     private static final String CHANNEL_ID = "order_status_channel";
     private static final int NOTIFICATION_ID = 1;
 
+    //sends notification to user
     public static void sendOrderStatusNotification(Context context, String userEmail, String orderStatus) {
         // Create the Intent to open when the notification is clicked
         Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Optional flag, depending on your needs
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        // Make sure the PendingIntent is immutable as recommended for Android 12+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        // Set up the notification channel (required for Android 8.0 and above)
         createNotificationChannel(context);
 
         // Build the notification
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notification) // Replace with your notification icon
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("Order Status Update")
                 .setContentText("The order status has been updated to: " + orderStatus)
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent);  // Open MainActivity when clicked
+                .setContentIntent(pendingIntent);
 
         // Get the NotificationManager system service
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
