@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException; // Added import
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException; // Added import
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,14 +60,20 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        // Exemple de regex pour au moins 8 caractères, une majuscule, une minuscule, un chiffre
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
+
         if (password.isEmpty()) {
             passwordEditText.setError("Password is required");
+            passwordEditText.requestFocus(); // Added missing requestFocus
+            return;
+        } else if (password.length() < 8) { // Augmenter la longueur
+            passwordEditText.setError("Password must be at least 8 characters");
             passwordEditText.requestFocus();
             return;
-        }
-
-        if (password.length() < 6) {
-            passwordEditText.setError("Password must be at least 6 characters");
+        } else if (!password.matches(passwordPattern)) {
+            passwordEditText.setError("Password must include uppercase, lowercase, and a number.");
+            // Idéalement, donner des indications plus précises sur ce qui manque.
             passwordEditText.requestFocus();
             return;
         }
@@ -121,10 +129,17 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish(); // Close register activity
                     } else {
-                        Log.e(TAG, "Error: " + task.getException().getMessage());
-                        Toast.makeText(RegisterActivity.this,
-                                "Registration failed: " + task.getException().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        Exception exception = task.getException();
+                        Log.e(TAG, "Registration failed", exception); // Log détaillé pour les développeurs
+                        String errorMessage;
+                        if (exception instanceof FirebaseAuthUserCollisionException) {
+                            errorMessage = "This email address is already in use.";
+                        } else if (exception instanceof FirebaseAuthWeakPasswordException) {
+                            errorMessage = "The password is too weak. Please choose a stronger password.";
+                        } else {
+                            errorMessage = "Registration failed. Please try again later.";
+                        }
+                        Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     }
                 });
     }
