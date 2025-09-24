@@ -86,10 +86,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private void bindItemData(@NonNull ItemViewHolder holder, Item item) {
         // Set item name
         holder.nameTextView.setText(getSafeString(item.getName(), "Unnamed Product"));
-        holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.lighter));
-        holder.nameTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
-        holder.priceTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
-        holder.descriptionTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
+        // Remove hardcoded colors - let the theme handle styling through XML
         // Set price
         holder.priceTextView.setText(formatPrice(item.getPrice()));
 

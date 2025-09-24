@@ -3,167 +3,164 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cream">
+    android:background="?android:colorBackground">
 
-
-    <ImageView
-        android:id="@+id/successIcon"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/ic_check_circle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorPrimary" />
-
-    <TextView
-        android:id="@+id/successTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Commande Réussie!"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/successIcon" />
-
-    <TextView
-        android:id="@+id/successMessage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:text="Merci pour votre commande. Vous recevrez des notifications lorsque le statut de votre commande changera."
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/successTitle" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/orderDetailsCard"
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/successMessage">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?colorSurface"
+        android:elevation="@dimen/card_elevation"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Order Confirmation"
+        app:titleTextColor="?colorOnSurface" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/buttonLayout"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/lighter"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_lg">
 
+            <!-- Success Icon -->
+            <ImageView
+                android:id="@+id/successIcon"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/spacing_lg"
+                android:src="@drawable/ic_check_circle"
+                app:tint="@color/success" />
+
+            <!-- Success Title -->
             <TextView
+                android:id="@+id/successTitle"
+                style="@style/TextAppearance.App.HeadlineMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Détails de la commande"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                android:text="Commande Réussie!"
+                android:textColor="?colorOnSurface" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="#DDDDDD" />
-
+            <!-- Success Message -->
             <TextView
-                android:id="@+id/orderIdText"
+                android:id="@+id/successMessage"
+                style="@style/TextAppearance.App.BodyLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Commande #123456"
-                android:textColor="@color/white"
+                android:layout_marginBottom="@dimen/spacing_xl"
+                android:gravity="center"
+                android:text="Merci pour votre commande. Vous recevrez des notifications lorsque le statut de votre commande changera."
+                android:textColor="?colorOnSurfaceVariant" />
 
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/dateText"
+            <!-- Order Details Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/orderDetailsCard"
+                style="@style/Widget.App.CardView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="31 mars 2025, 11:36"
-                android:textColor="@color/white"
+                android:layout_height="wrap_content">
 
-                android:textSize="16sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_lg">
 
-            <TextView
-                android:id="@+id/statusText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Statut: En attente"                android:textColor="@color/white"
+                    <TextView
+                        style="@style/TextAppearance.App.TitleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_md"
+                        android:text="Détails de la commande"
+                        android:textColor="?colorOnSurface" />
 
-                android:textSize="16sp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/spacing_md"
+                        android:background="?colorOutline" />
 
-            <TextView
-                android:id="@+id/itemCountText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="3 articles"
-                android:textColor="@color/white"
+                    <TextView
+                        android:id="@+id/orderIdText"
+                        style="@style/TextAppearance.App.BodyLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        android:text="Commande #123456"
+                        android:textColor="?colorOnSurface" />
 
-                android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/dateText"
+                        style="@style/TextAppearance.App.BodyLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        android:text="31 mars 2025, 11:36"
+                        android:textColor="?colorOnSurfaceVariant" />
 
-            <TextView
-                android:id="@+id/totalText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Total: $123.45"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                />
+                    <TextView
+                        android:id="@+id/statusText"
+                        style="@style/TextAppearance.App.BodyLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        android:text="Statut: En attente"
+                        android:textColor="?colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/itemCountText"
+                        style="@style/TextAppearance.App.BodyLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_sm"
+                        android:text="3 articles"
+                        android:textColor="?colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:id="@+id/totalText"
+                        style="@style/TextAppearance.App.TitleMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Total: $123.45"
+                        android:textColor="?colorPrimary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
 
+    <!-- Action Buttons -->
     <LinearLayout
+        android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:background="@color/lighter"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:padding="@dimen/spacing_lg"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/continueShoppingButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.App.Button.Outlined"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/spacing_sm"
             android:layout_weight="1"
-            android:text="Continuer les achats"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white" />
+            android:text="Continuer les achats" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/viewOrdersButton"
+            style="@style/Widget.App.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/spacing_sm"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:text="Voir mes commandes"
-            android:textColor="@android:color/black" />
+            android:text="Voir mes commandes" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

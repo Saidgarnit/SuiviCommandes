@@ -1,49 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors -->
-    <color name="colorPrimary">#3F51B5</color>          <!-- Indigo -->
-    <color name="colorPrimaryDark">#303F9F</color>      <!-- Dark Indigo -->
-    <color name="colorPrimaryLight">#C5CAE9</color>     <!-- Light Indigo -->
+    <!-- Material Design 3 Primary Colors -->
+    <color name="md_theme_light_primary">#3F51B5</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#C5CAE9</color>
+    <color name="md_theme_light_onPrimaryContainer">#1A1B23</color>
+    
+    <color name="md_theme_dark_primary">#B8C5FF</color>
+    <color name="md_theme_dark_onPrimary">#1A1B23</color>
+    <color name="md_theme_dark_primaryContainer">#303F9F</color>
+    <color name="md_theme_dark_onPrimaryContainer">#FFFFFF</color>
 
-    <!-- Accent Colors -->
-    <color name="colorAccent">#FF4081</color>           <!-- Pink -->
-    <color name="colorAccentLight">#FF80AB</color>      <!-- Light Pink -->
+    <!-- Material Design 3 Secondary Colors -->
+    <color name="md_theme_light_secondary">#FF4081</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#FF80AB</color>
+    <color name="md_theme_light_onSecondaryContainer">#1A0D14</color>
+    
+    <color name="md_theme_dark_secondary">#FFB3CC</color>
+    <color name="md_theme_dark_onSecondary">#1A0D14</color>
+    <color name="md_theme_dark_secondaryContainer">#CC1E66</color>
+    <color name="md_theme_dark_onSecondaryContainer">#FFFFFF</color>
 
-    <!-- Button Colors -->
-    <color name="buttonColor">#3F51B5</color>           <!-- Primary -->
-    <color name="buttonColorSecondary">#FF4081</color>  <!-- Accent -->
-    <color name="buttonDisabled">#BDBDBD</color>        <!-- Gray -->
-
-    <!-- Text Colors -->
-    <color name="textColorPrimary">#212121</color>      <!-- Dark Gray -->
-    <color name="textColorSecondary">#757575</color>    <!-- Medium Gray -->
-    <color name="textColorHint">#9E9E9E</color>         <!-- Light Gray -->
-    <color name="textColorWhite">#FFFFFF</color>        <!-- White -->
-    <color name="backgroundColorDark">#121212</color>
+    <!-- Surface Colors -->
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#1A1B23</color>
+    <color name="md_theme_light_surfaceVariant">#F5F5F5</color>
+    <color name="md_theme_light_onSurfaceVariant">#757575</color>
+    
+    <color name="md_theme_dark_surface">#1A1B23</color>
+    <color name="md_theme_dark_onSurface">#E3E2E6</color>
+    <color name="md_theme_dark_surfaceVariant">#343434</color>
+    <color name="md_theme_dark_onSurfaceVariant">#C7C5D0</color>
 
     <!-- Background Colors -->
-    <color name="backgroundColor">#F5F5F5</color>       <!-- Off-White -->
-    <color name="cardBackground">#FFFFFF</color>        <!-- White -->
-    <color name="dividerColor">#EEEEEE</color>          <!-- Light Gray -->
+    <color name="md_theme_light_background">#FEFBFF</color>
+    <color name="md_theme_light_onBackground">#1A1B23</color>
+    
+    <color name="md_theme_dark_background">#121212</color>
+    <color name="md_theme_dark_onBackground">#E3E2E6</color>
 
-    <!-- Gradient Colors -->
-    <color name="gradientStart">#304FFE</color>         <!-- Deep Indigo -->
-    <color name="gradientCenter">#3F51B5</color>        <!-- Indigo -->
-    <color name="gradientEnd">#7986CB</color>           <!-- Light Indigo -->
+    <!-- Error Colors -->
+    <color name="md_theme_light_error">#F44336</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFCDD2</color>
+    <color name="md_theme_light_onErrorContainer">#410E0B</color>
+    
+    <color name="md_theme_dark_error">#FFB4AB</color>
+    <color name="md_theme_dark_onError">#410E0B</color>
+    <color name="md_theme_dark_errorContainer">#93000A</color>
+    <color name="md_theme_dark_onErrorContainer">#FFCDD2</color>
+
+    <!-- Outline Colors -->
+    <color name="md_theme_light_outline">#BDBDBD</color>
+    <color name="md_theme_dark_outline">#757575</color>
 
     <!-- Status Colors -->
-    <color name="successColor">#4CAF50</color>          <!-- Green -->
-    <color name="warningColor">#FFC107</color>          <!-- Amber -->
-    <color name="errorColor">#F44336</color>            <!-- Red -->
-    <color name="infoColor">#2196F3</color>             <!-- Blue -->
+    <color name="success">#4CAF50</color>
+    <color name="success_container">#C8E6C9</color>
+    <color name="on_success">#FFFFFF</color>
+    <color name="on_success_container">#1B5E20</color>
+    
+    <color name="warning">#FFC107</color>
+    <color name="warning_container">#FFF3C4</color>
+    <color name="on_warning">#000000</color>
+    <color name="on_warning_container">#3E2723</color>
+    
+    <color name="info">#2196F3</color>
+    <color name="info_container">#E3F2FD</color>
+    <color name="on_info">#FFFFFF</color>
+    <color name="on_info_container">#0D47A1</color>
 
     <!-- Standard Colors -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
+    
+    <!-- Legacy colors for backward compatibility - will be deprecated -->
+    <color name="colorPrimary">@color/md_theme_light_primary</color>
+    <color name="colorPrimaryDark">@color/md_theme_light_primaryContainer</color>
+    <color name="colorAccent">@color/md_theme_light_secondary</color>
+    <color name="textColorPrimary">@color/md_theme_light_onSurface</color>
+    <color name="textColorSecondary">@color/md_theme_light_onSurfaceVariant</color>
+    <color name="backgroundColor">@color/md_theme_light_background</color>
+    <color name="cardBackground">@color/md_theme_light_surface</color>
     <color name="cream">#1d1d1d</color>
     <color name="dark_brown">#e8e8e8</color>
     <color name="lighter">#343434</color>
-
 
 </resources>

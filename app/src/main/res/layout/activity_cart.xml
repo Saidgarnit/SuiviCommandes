@@ -4,95 +4,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lighter"
+    android:background="?android:colorBackground"
     tools:context=".CartActivity">
 
-
-    <TextView
-        android:id="@+id/cartTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Your Cart"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?colorSurface"
+        android:elevation="@dimen/card_elevation"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/white"/>
+        app:title="Mon Panier"
+        app:titleTextColor="?colorOnSurface" />
 
+    <!-- RecyclerView for Cart Items -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
-
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:layout_marginBottom="@dimen/spacing_sm"
+        android:clipToPadding="false"
+        android:padding="@dimen/spacing_sm"
         app:layout_constraintBottom_toTopOf="@id/totalLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cartTitle" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-    <TextView
-        android:id="@+id/emptyCartText"
+    <!-- Empty Cart Message -->
+    <LinearLayout
+        android:id="@+id/emptyCartLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Votre panier est vide"
-        android:textSize="18sp"
+        android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/totalLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/cream_top_bg"
-
-        android:elevation="8dp"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@id/buttonLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/totalPriceText"
+            android:id="@+id/emptyCartText"
+            style="@style/TextAppearance.App.HeadlineMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="Total: $0.00"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:text="Votre panier est vide"
+            android:textColor="?colorOnSurfaceVariant" />
+
     </LinearLayout>
 
+    <!-- Total Section -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/totalLayout"
+        style="@style/Widget.App.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        app:cardCornerRadius="0dp"
+        app:layout_constraintBottom_toTopOf="@id/buttonLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <TextView
+                android:id="@+id/totalPriceText"
+                style="@style/TextAppearance.App.TitleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Total: $0.00"
+                android:textColor="?colorPrimary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Action Buttons -->
     <LinearLayout
         android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="@dimen/spacing_lg"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/continueShoppingButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.App.Button.Outlined"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/spacing_sm"
             android:layout_weight="1"
-            android:text="Continuer"
-            android:textColor="@color/white" />
+            android:text="Continuer" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/checkoutButton"
+            style="@style/Widget.App.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/spacing_sm"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:text="Commander"
-            android:textColor="@color/black" />
+            android:text="Commander" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
