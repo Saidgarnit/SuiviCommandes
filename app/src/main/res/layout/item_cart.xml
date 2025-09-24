@@ -1,85 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.App.CardView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/cream"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/cream"
-        android:padding="8dp">
+        android:padding="@dimen/card_padding">
 
         <ImageView
             android:id="@+id/itemImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/image_thumbnail"
+            android:layout_height="@dimen/image_thumbnail"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:background="?colorSurfaceVariant"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_placeholder" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/itemName"
+                style="@style/TextAppearance.App.TitleMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xs"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="Product Name"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="?colorOnSurface" />
 
             <TextView
                 android:id="@+id/itemPrice"
+                style="@style/TextAppearance.App.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginBottom="@dimen/spacing_sm"
                 android:text="$0.00"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textColor="?colorPrimary"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/decreaseButton"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_remove" />
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    app:icon="@drawable/ic_remove"
+                    app:iconGravity="textStart"
+                    app:iconSize="@dimen/icon_size_small" />
 
                 <TextView
                     android:id="@+id/quantityText"
+                    style="@style/TextAppearance.App.BodyLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="@dimen/spacing_sm"
+                    android:layout_marginEnd="@dimen/spacing_sm"
+                    android:minWidth="32dp"
+                    android:gravity="center"
                     android:text="1"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textColor="?colorOnSurface"
                     android:textStyle="bold" />
 
-                <ImageButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/increaseButton"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_add" />
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="@dimen/icon_size_medium"
+                    android:layout_height="@dimen/icon_size_medium"
+                    app:icon="@drawable/ic_add"
+                    app:iconGravity="textStart"
+                    app:iconSize="@dimen/icon_size_small" />
             </LinearLayout>
         </LinearLayout>
 
@@ -89,22 +92,25 @@
             android:gravity="center_vertical|end"
             android:orientation="vertical">
 
-            <ImageButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/removeButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_delete" />
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="@dimen/icon_size_medium"
+                android:layout_height="@dimen/icon_size_medium"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconSize="@dimen/icon_size_small"
+                app:iconTint="?colorError" />
 
             <TextView
                 android:id="@+id/itemTotal"
+                style="@style/TextAppearance.App.TitleMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_md"
                 android:text="$0.00"
-                android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textColor="?colorPrimary"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

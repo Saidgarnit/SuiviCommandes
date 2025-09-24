@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/colorPrimaryLight">
+    android:color="?colorPrimaryContainer">
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="8dp" />
-            <stroke android:color="@color/buttonColor" android:width="2dp" />
+            <corners android:radius="@dimen/button_corner_radius" />
+            <stroke android:color="?colorPrimary" android:width="2dp" />
             <solid android:color="@color/transparent" />
         </shape>
     </item>
