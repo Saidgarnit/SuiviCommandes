@@ -51,6 +51,10 @@
     <color name="md_theme_dark_errorContainer">#93000A</color>
     <color name="md_theme_dark_onErrorContainer">#FFCDD2</color>
 
+    <!-- Outline Colors -->
+    <color name="md_theme_light_outline">#BDBDBD</color>
+    <color name="md_theme_dark_outline">#757575</color>
+
     <!-- Status Colors -->
     <color name="success">#4CAF50</color>
     <color name="success_container">#C8E6C9</color>
